@@ -1,0 +1,28 @@
+name: Telegram Auto
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # cada hora
+  workflow_dispatch:
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias
+        run: pip install telethon
+
+      - name: Enviar mensaje
+        env:
+          API_ID: ${{ secrets.API_ID }}
+          API_HASH: ${{ secrets.API_HASH }}
+          GRUPO: ${{ secrets.GRUPO }}
+          MENSAJE: ${{ secrets.MENSAJE }}
+        run: python enviar.py
